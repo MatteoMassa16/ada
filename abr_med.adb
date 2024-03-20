@@ -11,13 +11,16 @@ PACKAGE BODY Abr_Med IS
    BEGIN
 
       Put("Nom du medecin : ");
-      Get_line(Med.Identite.Nom, k);
+      saisie(chaine);
+      Med.Identite.Nom := chaine;
 
       Put ("Prenom du medecin : ");
-      Get_line(Med.identite.Prenom, k);
+      Saisie(Chaine);
+      Med.Identite.Prenom := Chaine;
 
       Put("Ville d'exercice du medecin : ");
-      Get_line(Med.Ville, k);
+      Saisie(Chaine);
+      Med.Ville := chaine;
 
       Put("Decision prise : ");
       Get_line(chaine,K);
@@ -82,14 +85,36 @@ PACKAGE BODY Abr_Med IS
    BEGIN
 
       IF Ptr /= NULL THEN
-         Affichage_abr(Ptr.Fg);
-         Put("Dr.");Put(Ptr.Medecin.Identite.Nom); Put(" "); Put(Ptr.Medecin.Identite.Prenom);New_Line;
-         Put("   - Ville : ");Put_Line(Ptr.Medecin.Ville);
-         Put("   -Decision : "); Put(T_Decision'Image(Ptr.Medecin.Decision)); New_Line;
-         Put("   -Nombre de visite(s) : ");Put(Ptr.Medecin.NbVisite); New_line;
+         Affichage_Abr(Ptr.Fg);
+         Affichage_Med(Ptr);
          Affichage_Abr(Ptr.Fd);
       END IF;
 
    END Affichage_Abr;
+
+   ------------------------------------------ Affichage d'un medecin ----------------------------------------
+   ----------------------------------------------------------------------------------------------------------
+
+   PROCEDURE Affichage_Med (Ptr : T_Pabr_Med) IS
+
+   BEGIN
+
+      Put("Dr.");Put(Ptr.Medecin.Identite.Nom); Put(" "); Put(Ptr.Medecin.Identite.Prenom);New_Line;
+      Put("   - Ville : ");Put_Line(Ptr.Medecin.Ville);
+      Put("   - Decision : "); Put(T_Decision'Image(Ptr.Medecin.Decision)); New_Line;
+      Put("   - Nombre de visite(s) : ");Put(Ptr.Medecin.NbVisite); New_Line;
+
+   END Affichage_Med;
+
+   ---------------------------------------- Suppression d'un medecin ----------------------------------------
+   ----------------------------------------------------------------------------------------------------------
+
+   PROCEDURE Supp_Med (Ptr : T_Pabr_Med) IS
+
+   BEGIN
+
+      IF Ptr /= NULL THEN
+
+if ptr
 
 END Abr_Med;

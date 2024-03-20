@@ -14,7 +14,8 @@ BEGIN
 
    LOOP
 
-      Put("Saisir un autre medecin ? O/N");
+      New_Line;
+      Put("Saisir un autre medecin ? (O/N)  ");
       Get(C); Skip_Line;
 
       CASE C IS
@@ -26,7 +27,20 @@ BEGIN
 
    END LOOP;
 
+   New_Line;
    Affichage_Abr(Pabr_Med);
+
+   new_line;
+   Put("Nom du medecin recherche : ");
+   Saisie(Chaine);
+   New_Line;
+
+   IF Recherche(Pabr_Med, Chaine) = NULL THEN
+      Put("Ce medecin n'existe pas");
+   ELSE
+      Affichage_Med(Recherche(Pabr_Med, Chaine));
+   END IF;
+
 
 END Main;
 

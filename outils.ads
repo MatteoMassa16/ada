@@ -1,3 +1,6 @@
+WITH Ada.Text_IO, Ada.Integer_Text_IO, Ada.Float_Text_IO;
+USE Ada.Text_IO, Ada.Integer_Text_IO, Ada.Float_Text_IO;
+
 PACKAGE Outils IS
 
    SUBTYPE T_mot IS String (1..20);
@@ -6,16 +9,20 @@ PACKAGE Outils IS
       Nom,Prenom: T_mot;
    END RECORD;
 
+   TYPE T_Mois IS (Janvier, Fevrier, Mars, Avril, Mai, Juin, Juillet, Aout, Septembre, Octobre, Novembre, Decembre);
+
    TYPE T_Date IS RECORD
       Jour : INTEGER RANGE 1..31;
       Mois : T_Mois;
       Annee: Integer;
    END RECORD;
 
-   TYPE T_Mois IS (Janvier, Fevrier, Mars, Avril, Mai, Juin, Juillet, Aout, Septembre, Octobre, Novembre, Decembre);
 
 
-   PROCEDURE Saisie_Date(Dx : OUT T_Date);
+   C : Character;
+   Chaine : String (1..20);
+   K, cmpt : Integer;
 
+   PROCEDURE Saisie (S:OUT String);
 
-END Outils
+END Outils;

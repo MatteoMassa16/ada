@@ -25,6 +25,7 @@ PACKAGE Abr_Med IS
    PROCEDURE AjoutMed (Ptr : IN OUT T_PAbr_Med; Med : IN T_Medecin);
    FUNCTION Recherche (Ptr: T_Pabr_Med; Nom: T_Mot) RETURN T_Pabr_Med;
    PROCEDURE Affichage_Abr (Ptr : T_Pabr_Med);
+   PROCEDURE Affichage_Med (Ptr : T_Pabr_Med);
 
 
 END Abr_Med;
