@@ -21,8 +21,10 @@ PACKAGE Outils IS
 
    C : Character;
    Chaine : String (1..20);
-   K, cmpt : Integer;
+   K, Cmpt : Integer;
+   Res : Boolean;
 
    PROCEDURE Saisie (S:OUT String);
+   PROCEDURE OuiNon (C : Character ; Res : OUT Boolean);
 
 END Outils;

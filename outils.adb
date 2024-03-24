@@ -38,15 +38,27 @@ PACKAGE BODY Outils IS
 
       END LOOP;
 
-      S := To_Lower(S);
-
-      FOR I IN 1..10 LOOP
-
-         S(1):=To_Upper(S(1));
-
-      END LOOP;
+      S := To_Upper(S);
 
    END Saisie;
+
+   --- Choix : Oui / Non ---
+   -------------------------
+
+   Procedure OuiNon (C : Character ; Res : out boolean) IS
+
+   BEGIN
+
+      loop
+         CASE C IS
+            WHEN 'o'|'O' => Res := True; exit;
+            WHEN 'n'|'N' => Res := False; exit;
+            When others => put_line("Entrez O pour oui ou N pour non");
+         END CASE ;
+      END LOOP;
+
+   END OuiNon;
+
 
 END Outils;
 

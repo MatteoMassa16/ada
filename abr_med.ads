@@ -23,10 +23,11 @@ PACKAGE Abr_Med IS
 
    PROCEDURE SaisieMed (Med : IN OUT T_Medecin);
    PROCEDURE AjoutMed (Ptr : IN OUT T_PAbr_Med; Med : IN T_Medecin);
-   FUNCTION Recherche (Ptr: T_Pabr_Med; Nom: T_Mot) RETURN T_Pabr_Med;
-   PROCEDURE Affichage_Abr (Ptr : T_Pabr_Med);
-   PROCEDURE Affichage_Med (Ptr : T_Pabr_Med);
-
+   FUNCTION RechercheMed (Ptr: T_Pabr_Med; Nom: T_Mot) RETURN T_Pabr_Med;
+   PROCEDURE AffichageAbr (Ptr : T_Pabr_Med);
+   PROCEDURE AffichageMed (Ptr : T_Pabr_Med);
+   PROCEDURE ModifMed (Ptr : IN OUT T_Pabr_Med);
+   FUNCTION DoublonMed (Ptr : T_Pabr_Med ; Med : T_Medecin) RETURN Boolean;
 
 END Abr_Med;
 

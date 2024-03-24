@@ -28,18 +28,23 @@ BEGIN
    END LOOP;
 
    New_Line;
-   Affichage_Abr(Pabr_Med);
+   AffichageAbr(Pabr_Med);
 
-   new_line;
-   Put("Nom du medecin recherche : ");
-   Saisie(Chaine);
-   New_Line;
+--   new_line;
+--   Put_line(" --- Recherche medecin --- ");
+--   Put("Entrez le nom d'un medecin : ");
+--   Saisie(Chaine);
+--   New_Line;
 
-   IF Recherche(Pabr_Med, Chaine) = NULL THEN
-      Put("Ce medecin n'existe pas");
-   ELSE
-      Affichage_Med(Recherche(Pabr_Med, Chaine));
-   END IF;
+--   IF RechercheMed(Pabr_Med, Chaine) = NULL THEN
+--      Put("Ce medecin n'existe pas");
+--   ELSE
+--      AffichageMed(RechercheMed(Pabr_Med, Chaine));
+--   END IF;
+--
+   ModifMed(Pabr_Med);
+   AffichageAbr(Pabr_Med);
+
 
 
 END Main;

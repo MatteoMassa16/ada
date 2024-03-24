@@ -37,16 +37,40 @@ PACKAGE BODY Abr_Med IS
 
    PROCEDURE AjoutMed (Ptr : IN OUT T_pAbr_Med; med : in T_medecin) IS
 
+      TestDoublon : Boolean;
 
    BEGIN
 
       IF ptr = NULL THEN
-         ptr := NEW T_Abr_Medecin'(Med, NULL, NULL);
+         Ptr := NEW T_Abr_Medecin'(Med, NULL, NULL);
       ELSE
-         IF Med.identite.nom <= ptr.Medecin.Identite.Nom THEN
-            AjoutMed(ptr.Fg, Med);
+
+         TestDoublon := DoublonMed(Ptr, Med);
+
+         IF  TestDoublon = False THEN
+
+            IF Med.identite.nom <= ptr.Medecin.Identite.Nom THEN
+               AjoutMed(ptr.Fg, Med);
+            ELSE
+               AjoutMed(ptr.Fd, Med);
+            END IF;
+
          ELSE
-            AjoutMed(ptr.Fd, Med);
+
+            Put_Line("   * Ce medecin est deja enregistre.");
+            AffichageMed(RechercheMed(Ptr, Med.Identite.Nom));
+            New_Line;
+            Put("   - Voulez-vous le changer ? (O/N)  ");
+            Get(C); Skip_Line;
+
+            OuiNon(C, Res);
+
+            IF Res THEN
+               ModifMed(Ptr);
+            ELSE
+               put_line("   * Ajout annule.");
+            END IF;
+
          END IF;
       END IF;
    END AjoutMed;
@@ -55,7 +79,7 @@ PACKAGE BODY Abr_Med IS
    ----------------------- Recherche d'un medecin dans l'arbre ----------------
    ----------------------------------------------------------------------------
 
-   function Recherche (ptr: T_Pabr_Med; Nom: T_Mot) return T_Pabr_Med IS
+   FUNCTION RechercheMed (Ptr: T_Pabr_Med; Nom :T_Mot) RETURN T_Pabr_Med IS
 
    BEGIN
 
@@ -65,9 +89,9 @@ PACKAGE BODY Abr_Med IS
             RETURN (Ptr);
          ELSE
             IF Nom <= Ptr.Medecin.Identite.Nom THEN
-               Return(Recherche(Ptr.Fg, Nom));
+               Return(RechercheMed(Ptr.Fg, Nom));
             ELSE
-               RETURN(Recherche(Ptr.Fd, Nom));
+               RETURN(RechercheMed(Ptr.Fd, Nom));
             END IF;
          END IF;
 
@@ -75,27 +99,27 @@ PACKAGE BODY Abr_Med IS
          RETURN (NULL);
       END IF;
 
-   END Recherche;
+   END RechercheMed;
 
------------------------------- Affichage de l'arbre --------------------------
-------------------------------------------------------------------------------
+--------------------------------------------- Affichage de l'arbre ------------------------------------------
+-------------------------------------------------------------------------------------------------------------
 
-   PROCEDURE Affichage_Abr (Ptr : T_Pabr_Med) IS
+   PROCEDURE AffichageAbr (Ptr : T_Pabr_Med) IS
 
    BEGIN
 
       IF Ptr /= NULL THEN
-         Affichage_Abr(Ptr.Fg);
-         Affichage_Med(Ptr);
-         Affichage_Abr(Ptr.Fd);
+         AffichageAbr(Ptr.Fg);
+         AffichageMed(Ptr);
+         AffichageAbr(Ptr.Fd);
       END IF;
 
-   END Affichage_Abr;
+   END AffichageAbr;
 
    ------------------------------------------ Affichage d'un medecin ----------------------------------------
    ----------------------------------------------------------------------------------------------------------
 
-   PROCEDURE Affichage_Med (Ptr : T_Pabr_Med) IS
+   PROCEDURE AffichageMed (Ptr : T_Pabr_Med) IS
 
    BEGIN
 
@@ -104,17 +128,140 @@ PACKAGE BODY Abr_Med IS
       Put("   - Decision : "); Put(T_Decision'Image(Ptr.Medecin.Decision)); New_Line;
       Put("   - Nombre de visite(s) : ");Put(Ptr.Medecin.NbVisite); New_Line;
 
-   END Affichage_Med;
+   END AffichageMed;
 
    ---------------------------------------- Suppression d'un medecin ----------------------------------------
    ----------------------------------------------------------------------------------------------------------
 
-   PROCEDURE Supp_Med (Ptr : T_Pabr_Med) IS
+--   PROCEDURE Supp_Med (Ptr : T_Pabr_Med) IS
+
+--   BEGIN
+
+   --      IF Ptr /= NULL THEN
+
+
+   --------------------------------------- Modification d'un medecin ----------------------------------------
+   ----------------------------------------------------------------------------------------------------------
+
+   PROCEDURE ModifMed (Ptr : IN OUT T_Pabr_Med) IS
+
+      MedTemp : T_Medecin;
+      TestDoublon : Boolean;
+
+   BEGIN
+
+      Put_Line("--- Modification d'un medecin ---");
+      Put("   - Entrez le nom d'un medecin : ");
+      Saisie(Chaine);
+
+      ptr := RechercheMed(Ptr, Chaine);
+      AffichageMed(Ptr);
+
+      LOOP
+
+         Put_Line("   - Que voulez-vous modifier ? :");
+         Put_Line("      - 1 Nom");
+         Put_Line("      - 2 Prenom");
+         Put_Line("      - 3 Ville");
+         Put_Line("      - 4 Decision");
+         Put_Line("      - 5 Nombre de visite");
+         Put_line("      - 6 Quitter");
+         Get(K);Skip_Line;
+
+         CASE K IS
+            WHEN 1 => Put("      - Nouveau nom : ");
+               Saisie(Chaine);
+               New_Line;
+
+               MedTemp := ((Chaine, Ptr.Medecin.Identite.Prenom), Ptr.Medecin.Ville, Hesitant, 0);
+
+               TestDoublon := DoublonMed(Ptr, MedTemp);
+
+               IF TestDoublon THEN
+                  Put_Line("      * Ce medecin existe deja.");
+               ELSE
+               Ptr.Medecin.Identite.Nom := Chaine;
+                  AffichageMed(Ptr);
+               END IF;
+
+
+            WHEN 2 => Put("      - Nouveau prenom : ");
+               Saisie(Chaine);
+               New_Line;
+
+               MedTemp := ((Ptr.Medecin.Identite.Nom, Chaine), Ptr.Medecin.Ville, Hesitant, 0);
+
+               TestDoublon := DoublonMed(Ptr, MedTemp);
+
+               IF TestDoublon THEN
+                  Put_Line("      * Ce medecin existe deja.");
+               ELSE
+                  Ptr.Medecin.Identite.Prenom := Chaine;
+                  AffichageMed(Ptr);
+               END IF;
+
+
+            WHEN 3 => Put("      - Nouvelle Ville : ");
+               Saisie(Chaine);
+               New_Line;
+
+               MedTemp := ((Ptr.Medecin.Identite.Nom, Ptr.Medecin.Identite.Prenom), Chaine, Hesitant, 0);
+               Put(Medtemp.Ville);
+               put(ptr.medecin.ville);
+
+               TestDoublon := DoublonMed(Ptr, MedTemp);
+
+               IF TestDoublon THEN
+                  Put_Line("      * Ce medecin existe deja.");
+               ELSE
+                  Ptr.Medecin.Ville := Chaine;
+                  AffichageMed(Ptr);
+               END IF;
+
+            WHEN 4 => Put("      - Enfin changer d'avis !");
+               Saisie(Chaine);
+               New_line;
+               Ptr.Medecin.Decision := T_Decision'Value(Chaine);
+               AffichageMed(Ptr);
+
+            WHEN 5 => Put("      - Nombre de visite : ");
+               Get(K);Skip_Line;
+               New_Line;
+               Ptr.Medecin.NbVisite := K;
+               AffichageMed(Ptr);
+
+            WHEN OTHERS => Put_Line("      * Procedure terminee.");
+               EXIT;
+         END CASE;
+      END LOOP;
+
+   END ModifMed;
+
+   ------------------------------------ Verif des doublons de medecin ------------------------------------------
+   -------------------------------------------------------------------------------------------------------------
+
+   FUNCTION DoublonMed (Ptr : T_Pabr_Med ; Med : T_Medecin) RETURN Boolean IS
+
+      MedExiste : T_Pabr_Med;
 
    BEGIN
 
       IF Ptr /= NULL THEN
 
-if ptr
+         MedExiste := RechercheMed(Ptr, Med.Identite.Nom);
+
+         IF  MedExiste = NULL OR ELSE (MedExiste.Medecin.Identite.Nom = Med.Identite.Nom AND MedExiste.Medecin.Identite.Prenom /= Med.Identite.Prenom) OR ELSE (MedExiste.Medecin.Ville /= Med.Ville) THEN
+            RETURN False;
+         ELSE
+            RETURN True;
+         END IF;
+
+      END IF;
+   END DoublonMed;
+
+
+
+
+
 
 END Abr_Med;
