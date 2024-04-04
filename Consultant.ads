@@ -29,14 +29,17 @@ Package Consultant is
 
    TYPE T_ListeConsultant IS RECORD
 
-      Cslt: T_ T_Consultant;
+      Cslt: T_Consultant;
 
       Suiv: T_Ptr_Cslt;
 
    END RECORD;
 
 
-   Procedure Initialisation_Cslt (C: out T_Cslt; Tete: in out T_Ptr_Cslt);
+   PROCEDURE Initialisation_Cslt (C: out T_Cslt; Tete: in out T_Ptr_Cslt) ;
+   PROCEDURE Supp_Cslt (L: in out T_Ptr_Cslt; ok: out boolean; Cslt: T_Cslt) ;
+   PROCEDURE Ajout_Cslt (C: out T_Cslt; tete: IN OUT T_Ptr_Cslt) ;
+   PROCEDURE Saisie_Cslt (C: OUT T_Cslt; T: in out T_TabVisite ;
 
 
 END Consultant;
