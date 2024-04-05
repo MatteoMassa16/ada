@@ -40,6 +40,7 @@ PACKAGE BODY Outils IS
 
       S := To_Upper(S);
 
+
    END Saisie;
 
    --- Choix : Oui / Non ---

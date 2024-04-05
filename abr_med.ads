@@ -20,6 +20,10 @@ PACKAGE Abr_Med IS
       Fg, Fd : T_pAbr_Med;
    END RECORD;
 
+   PAbr_Med : T_PAbr_Med;
+   Med : T_Medecin;
+
+
 
    PROCEDURE SaisieMed (Med : IN OUT T_Medecin);
    PROCEDURE AjoutMed (Ptr : IN OUT T_PAbr_Med; Med : IN T_Medecin);

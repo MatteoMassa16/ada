@@ -22,6 +22,7 @@ PACKAGE Outils IS
    C : Character;
    Chaine : String (1..20);
    K, Cmpt : Integer;
+   L: float;
    Res : Boolean;
 
    PROCEDURE Saisie (S:OUT String);
