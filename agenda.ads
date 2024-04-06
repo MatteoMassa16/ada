@@ -24,7 +24,8 @@ PACKAGE Agenda IS
 
    PROCEDURE Creajour (Jour: IN OUT T_Jour);
    PROCEDURE Ajoutjour (P : IN OUT T_Pagenda ; Jour : T_Jour);
-   PROCEDURE AfficheAgenda (P : IN OUT T_PAgenda);
+   PROCEDURE AfficheAgenda (P : IN T_PAgenda);
+   PROCEDURE AjoutVisiteListe (P : IN OUT T_PAgenda);
 
 
 END Agenda;

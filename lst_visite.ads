@@ -26,6 +26,6 @@ PACKAGE Lst_Visite IS
 
    PROCEDURE CreaVisite (Visite : IN OUT T_Visite ; PAbr_Med : T_PAbr_Med);
    PROCEDURE AjoutVisite (ListeVisite : IN OUT T_ListeVisite ; Visite : T_Visite ; Fait : OUT Boolean);
-   PROCEDURE AfficheVisiteMedNat (Visite : T_Visite);
+   PROCEDURE AfficheVisiteMedNat (ListeVisite : T_ListeVisite);
 
 END Lst_Visite;

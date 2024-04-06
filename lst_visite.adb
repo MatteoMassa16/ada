@@ -63,17 +63,25 @@ PACKAGE BODY Lst_Visite IS
    --- Affichage d'une visite ---
    ------------------------------
 
-   PROCEDURE AfficheVisiteMedNat (Visite : T_Visite) IS
+   PROCEDURE AfficheVisiteMedNat (ListeVisite : T_ListeVisite) IS
 
    BEGIN
 
-      Put_Line("Visite avec :");
-      Put("Dr.");Put(Visite.Med.Medecin.Identite.Nom); Put(" "); Put_Line(Visite.Med.Medecin.Identite.Prenom);
-      put("Nature de la visite : ");
-      Put_line(T_natureVisite'image(Visite.NatureVisite));
+      FOR I IN 1..ListeVisite.Taille LOOP
+
+         Put_Line("Visite avec :");
+         Put("   - Dr.");Put(ListeVisite.Liste(i).Med.Medecin.Identite.Nom); Put(" "); Put_Line(ListeVisite.Liste(i).Med.Medecin.Identite.Prenom);
+         put("   - Nature de la visite : ");
+         Put_Line(T_NatureVisite'Image(ListeVisite.Liste(i).NatureVisite));
+         New_Line;
+
+      END LOOP;
+
 
 
    END AfficheVisiteMedNat;
+
+
 
    --- Suppression d'une visite ---
    --------------------------------
