@@ -3,6 +3,96 @@ USE Ada.Text_IO,Ada.Integer_Text_IO, Ada.Float_Text_IO, Outils, Abr_Med, lst_vil
 
 PACKAGE BODY Abr_Med IS
 
+   --- Initialisation des medecins ---
+   -----------------------------------
+   
+   PROCEDURE IniMed(Med  : in out T_medecin) IS
+      
+   BEGIN
+      
+      Med.Identite.Nom(1..7) := "POPPINS";
+      Med.Identite.Prenom(1..4) := "MARY";
+      Med.Ville(1..7) := "LIMOGES";
+      Med.Decision := T_Decision'Value("NON_INTERESSE");
+      Med.NbVisite := 0;
+      AjoutMed(pAbr_Med, Med);
+      
+--      Med.Identite.Nom := (others => ' ');
+--      Med.Identite.Prenom :=  (others => ' ');
+--      Med.Ville := (others => ' ');
+      
+      Med.Identite.Nom(1..9) := "CLOCHETTE";
+      Med.Identite.Prenom(1..3) := "FAY";
+      Med.Ville(1..8) := "BORDEAUX";
+      Med.Decision := T_Decision'Value("HESITANT");
+      Med.NbVisite := 0;
+      AjoutMed(PAbr_Med, Med);
+      
+      Med.Identite.Nom := (others => ' ');
+      Med.Identite.Prenom :=  (others => ' ');
+      Med.Ville := (OTHERS => ' ');
+      
+      Med.Identite.Nom(1..3) := "PAN";
+      Med.Identite.Prenom(1..5) := "PETER";
+      Med.Ville(1..8) := "BORDEAUX";
+      Med.Decision := T_Decision'Value("ADHERENT");
+      Med.NbVisite := 0;
+      AjoutMed(PAbr_Med, Med);
+      
+      Med.Identite.Nom := (others => ' ');
+      Med.Identite.Prenom :=  (others => ' ');
+      Med.Ville := (OTHERS => ' ');
+      
+      Med.Identite.Nom(1..3) := "PAN";
+      Med.Identite.Prenom(1..5) := "PETER";
+      Med.Ville(1..5) := "TOURS";
+      Med.Decision := T_Decision'Value("ATTENTE");
+      Med.NbVisite := 0;
+      AjoutMed(PAbr_Med, Med);
+      
+      Med.Identite.Nom := (others => ' ');
+      Med.Identite.Prenom :=  (others => ' ');
+      Med.Ville := (OTHERS => ' ');
+      
+      Med.Identite.Nom(1..5) := "ROMEO";
+      Med.Identite.Prenom (1..4):= "MARC";
+      Med.Ville(1..7) := "LIMOGES";
+      Med.Decision := T_Decision'Value("HESITANT");
+      Med.NbVisite := 0;
+      AjoutMed(PAbr_Med, Med);
+      
+      Med.Identite.Nom := (others => ' ');
+      Med.Identite.Prenom :=  (others => ' ');
+      Med.Ville := (OTHERS => ' ');
+      
+      Med.Identite.Nom(1..5) := "POUCE";
+      Med.Identite.Prenom(1..3) := "TOM";
+      Med.Ville(1..5) := "TOURS";
+      Med.Decision := T_Decision'Value("ADHERENT");
+      Med.NbVisite := 0;
+      AjoutMed(PAbr_Med, Med);
+      
+      Med.Identite.Nom := (others => ' ');
+      Med.Identite.Prenom :=  (others => ' ');
+      Med.Ville := (OTHERS => ' ');
+      
+      Med.Identite.Nom(1..5) := "ROMEO";
+      Med.Identite.Prenom(1..8) := "JULIETTE";
+      Med.Ville(1..5) := "TOURS";
+      Med.Decision := T_Decision'Value("ATTENTE");
+      Med.NbVisite := 0;
+      AjoutMed(PAbr_Med, Med);
+      
+      Med.Identite.Nom := (others => ' ');
+      Med.Identite.Prenom :=  (others => ' ');
+      Med.Ville := (OTHERS => ' ');
+      
+   END IniMed;
+      
+
+      
+      
+   
    ------------------------------------- Saisie d'un nouveau medecin ---------------------------------------------
    ---------------------------------------------------------------------------------------------------------------
 
@@ -28,6 +118,7 @@ PACKAGE BODY Abr_Med IS
 
       Put("Nombre de visite realisee : ");
       Get(Med.NbVisite); Skip_Line;
+      New_Line;
 
    END SaisieMed;
 
@@ -41,39 +132,41 @@ PACKAGE BODY Abr_Med IS
 
       IF ptr = NULL THEN
          Ptr := NEW T_Abr_Medecin'(Med, NULL, NULL);
-
+         
          IF  ChercheVille(PVille, Med.Ville) = NULL THEN
             Put(Med.Ville);Put(" n'est pas enregistree"); New_Line;
             Put("L'enregistrer ? (O/N)  ");
             Get(C);Skip_Line;OuiNon(C, Res);
-
+            
             IF Res THEN
                Creaville (Ville, med.ville);
                AjoutVille(PVille, Ville, Confirm);
-
+               
                IF Confirm THEN
                   Put("Ville creee");
                END IF;
-
+               
             END IF;
          END IF;
-
+       
       ELSE
 
          DoublonMed(Ptr, Med, erreur);
 
          IF  erreur = False THEN
 
-            IF Med.identite.nom <= ptr.Medecin.Identite.Nom THEN
-               AjoutMed(ptr.Fg, Med);
+            IF Med.Identite.Nom < Ptr.Medecin.Identite.Nom OR ELSE
+                 (Med.Identite.Nom = Ptr.Medecin.Identite.Nom and Med.Identite.Prenom < Ptr.Medecin.Identite.Prenom) OR ELSE
+                  (Med.Identite.Nom = Ptr.Medecin.Identite.Nom and Med.Identite.Prenom = Ptr.Medecin.Identite.Prenom and Med.Ville <= Ptr.Medecin.Ville) THEN
+                     
+               AjoutMed(Ptr.Fg, Med);
+               
             ELSE
                AjoutMed(ptr.Fd, Med);
             END IF;
 
          ELSE
-
-            Put_Line("   * Ce medecin est deja enregistre.");
-            AffichageMed(RechercheMed(Ptr, Med.Identite.Nom));
+            
             New_Line;
             Put("   - Voulez-vous le changer ? (O/N)  ");
             Get(C); Skip_Line;
@@ -88,9 +181,9 @@ PACKAGE BODY Abr_Med IS
 
          END IF;
       END IF;
-
+      
    END AjoutMed;
-
+   
 
 
    ------------------------------------- Recherche d'un medecin dans l'arbre -------------------------------------
@@ -140,7 +233,7 @@ PACKAGE BODY Abr_Med IS
 
    BEGIN
 
-      Put("Dr.");Put(Ptr.Medecin.Identite.Nom); Put(" "); Put(Ptr.Medecin.Identite.Prenom);New_Line;
+      Put("Dr.");Put(Ptr.Medecin.Identite.Nom, ); Put(" "); Put(Ptr.Medecin.Identite.Prenom);New_Line;
       Put("   - Ville : ");Put_Line(Ptr.Medecin.Ville);
       Put("   - Decision : "); Put(T_Decision'Image(Ptr.Medecin.Decision)); New_Line;
       Put("   - Nombre de visite(s) : ");Put(Ptr.Medecin.NbVisite); New_Line;
