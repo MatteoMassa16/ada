@@ -17,9 +17,9 @@ PACKAGE BODY Abr_Med IS
       Med.NbVisite := 0;
       AjoutMed(pAbr_Med, Med);
       
---      Med.Identite.Nom := (others => ' ');
---      Med.Identite.Prenom :=  (others => ' ');
---      Med.Ville := (others => ' ');
+      Med.Identite.Nom := (others => ' ');
+      Med.Identite.Prenom :=  (others => ' ');
+      Med.Ville := (others => ' ');
       
       Med.Identite.Nom(1..9) := "CLOCHETTE";
       Med.Identite.Prenom(1..3) := "FAY";
