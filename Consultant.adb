@@ -84,7 +84,33 @@ END Initialisation_Cslt;
    END Ajout_Cslt;
 
 ----------------------------------------------------------------------------------------
-   
+
+
+
+--PROCEDURE CreaCslt (Cslt: IN OUT T_Cslt ; nomCslt : T_Mot) IS
+
+--   BEGIN
+
+--      Put("   * Nom du consultant : ");
+--      put(nomCslt );
+--      Cslt.Nom := nomCslt ;
+--      New_Line;
+
+--      Put("   Ville de travail "); Put(Chaine); Put(" Nom de la ville : ");
+--      Get(Ville.Nom);Skip_Line;
+--      New_Line;
+
+--     
+--      Put_Line("   --- Consultant creee ---");
+--      Put("      - ");Put_Line(Cslt.Nom);
+--      Put("      - Nom de la ville : ");Put(Ville.Nom, aft=>2,exp=>0); -- Put_line(" Km");
+--     
+--   END CreaCslt ;
+
+
+
+
+------------------------------------------------------------------------------------------
 --  PROCEDURE MAJ_Cslt (tete: IN OUT T_Ptr_Cslt; T: OUT T_Cslt; J: Jour) IS
 --   BEGIN
 --      IF J= T_semaine'value("lundi") THEN
