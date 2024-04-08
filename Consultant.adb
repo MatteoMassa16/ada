@@ -1,5 +1,5 @@
-WITH Ada.Text_IO, Ada.Integer_Text_IO, Outils, ada.Characters.Handling;
-USE Ada.Text_IO, Ada.Integer_Text_IO, Outils, ada.Characters.Handling;
+WITH Ada.Text_IO, Ada.Integer_Text_IO, Outils, ada.Characters.Handling, agenda;
+USE Ada.Text_IO, Ada.Integer_Text_IO, Outils, ada.Characters.Handling, agenda;
 
 Package body Consultant is
 
@@ -9,25 +9,31 @@ Package body Consultant is
    BEGIN
 
 --Lucie Fer
-      C.Nom(1..3):= "Fer";
-      C.Prenom(1..5):= "Lucie";
-      C.Ville := "Bordeaux"; -- "Limoges","Tours");
+      C.Nom(1..3):= "FER";
+      C.Prenom(1..5):= "LUCIE";
+      C.Ville(1..8) := "BORDEAUX"; -- "Limoges","Tours");
+--      CreaJour(Jour);
+--      AjoutJour(Pagenda, Jour);
+--      C.pAgenda := pagenda;
       Ajout_Cslt(C, Tete);
+      
       C.Nom(1..15):=(OTHERS=> ' ');
       C.Prenom(1..10):=(others=> ' ');
-
 --Martin Guerre
-      C.Nom(1..6):= "Guerre";
-      C.Prenom(1..6):= "Martin";
-      C.Ville := ("Bordeaux"); -- "Limoges","Tours");     
+      C.Nom(1..6):= "GUERRE";
+      C.Prenom(1..6):= "MARTIN";
+      C.Ville(1..8) := "BORDEAUX"; -- "Limoges","Tours");
       Ajout_Cslt(C, Tete);
       C.Nom(1..15):=(OTHERS=> ' ');
       C.Prenom(1..10):=(others=> ' ');
 
 --Alice Merveille
-      C.Nom(1..9):= "Merveille";
-      C.Prenom(1..5):= "Alice";
-      C.Ville := ("Bordeaux"); -- "Limoges","Tours");
+      C.Nom(1..9):= "MERVEILLE";
+      C.Prenom(1..5):= "ALICE";
+      C.Ville(1..8) := ("BORDEAUX"); -- "Limoges","Tours");
+      CreaJour(Jour);
+      AjoutJour(Pagenda, Jour);
+      C.pAgenda := pagenda;
       Ajout_Cslt(C, Tete);
       C.Nom(1..15):=(OTHERS=> ' ');
       C.Prenom(1..10):=(others=> ' ');
@@ -46,7 +52,7 @@ END Initialisation_Cslt;
          ok:= true;
       Else Supp_Cslt (L.suiv,ok,Cslt);
       End if;
-   End;
+   End supp_cslt;
 
 
 ----------------------------------------------------------------------------------------
@@ -60,10 +66,10 @@ END Initialisation_Cslt;
       ELSIF C.Nom > tete.Cslt.Nom THEN
          tete:= NEW T_Liste_Cslt'(C,tete);
       ELSIF C.Nom < tete.Cslt.Nom THEN
-         Ajout_Cslt (C,Tete.Suiv);   --on appelle récursivement la fonction Ajout_Cslt pour insérer C dans la suite de la liste.
+         Ajout_Cslt (C,Tete.Suiv);   --on appelle rÃ©cursivement la fonction Ajout_Cslt pour insÃ©rer C dans la suite de la liste.
       ELSIF C.Prenom<tete.Cslt.Prenom THEN
          tete:= NEW T_Liste_Cslt'(C,tete);
-      ELSIF C.Prenom > tete.Cslt.Prenom THEN -- Son prenom est plus grand, on insère le consultant en tête de liste.
+      ELSIF C.Prenom > tete.Cslt.Prenom THEN -- Son prenom est plus grand, on insÃ¨re le consultant en tÃªte de liste.
          Ajout_Cslt(C,tete.Suiv);
       ELSE
          LOOP
@@ -76,7 +82,6 @@ END Initialisation_Cslt;
          END LOOP;
       END IF;
    END Ajout_Cslt;
-
 
 ----------------------------------------------------------------------------------------
    
@@ -91,11 +96,11 @@ END Initialisation_Cslt;
 --      END IF;
 
 --   END MAJ_Cslt ;
-----------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------
 
 
---   PROCEDURE Affichage_Cslt (tete: T_Ptr_Cslt; C: OUT T_Cslt) IS
---      ID: T_Ptr_BS:=tete;
+--   PROCEDURE Affichage_Cslt (tete: T_Ptr_Cslt) IS
+--      ID: T_Ptr_Cslt:=Tete;
 --      k: integer;
 --   BEGIN
 
@@ -113,7 +118,7 @@ END Initialisation_Cslt;
 --      get_line(C.Prenom,k);
 
 --      WHILE ID/=null loop
---         IF ID.C.Nom = C.Nom AND ID.BS.Prenom = C.Prenom THEN
+--         IF ID.Cslt.Nom = C.Nom AND ID.cslt.Prenom = C.Prenom THEN
 
 --            FOR i IN T_semaine LOOP
 --               new_line;
@@ -130,7 +135,7 @@ END Initialisation_Cslt;
 --         ID:=ID.suiv;
 --      END LOOP;
 --   END Affichage_Cslt;
-   
+--   
 ----------------------------------------------------------------------------------------
    
    --PROCEDURE RemiseZ (L: IN OUT T_Ptr_Cslt) IS --pour chaque debut de semaine
@@ -144,4 +149,65 @@ END Initialisation_Cslt;
    --         END IF;
    --      END IF;
    --END RemiseZ ;
-END Consultant ; 
+   
+----------------------------------------------------------------------------------------
+ PROCEDURE AfficheCsltTT (P : T_ptr_Cslt) IS
+
+   BEGIN
+
+
+      IF P /= NULL THEN
+
+         Put(P.Cslt.Nom);Put(" ");Put(P.Cslt.Prenom); New_Line;
+         Put("SA ville : "); Put(P.Cslt.Ville);
+         New_Line;New_Line;
+         
+         AfficheAgenda(P.Cslt.Pagenda);
+         
+         AfficheCsltTT(P.Suiv);
+
+      END IF;
+
+   END AfficheCsltTT;
+
+
+
+
+----------------------------------------------------------------------------------------
+
+ FUNCTION RechercheCslt (Ptr: T_Ptr_Cslt; Nom :T_Mot) RETURN T_ptr_Cslt IS
+
+   BEGIN
+
+      IF Ptr /= NULL THEN
+
+         IF Ptr.Cslt.Nom = Nom THEN
+            RETURN (Ptr);
+         ELSE
+           RETURN(RechercheCslt(Ptr.suiv,Nom));                     
+         END IF;
+
+      ELSE
+         RETURN (NULL);
+      END IF;
+      
+   END RechercheCslt ;
+   
+
+   --- Affichage d'un consultant ---
+   --------------------------
+   
+ PROCEDURE AfficheCslt (P : T_ptr_Cslt) IS
+
+ BEGIn
+         if p/= null then
+         Put(P.Cslt.Nom);Put(" ");Put(P.Cslt.Prenom); New_Line;
+         Put("SA ville : "); Put(P.Cslt.Ville);
+         New_Line;New_Line;
+
+end if;
+ END AfficheCslt;
+----------------------------------------------------------------------------------------
+    
+
+END Consultant ;
