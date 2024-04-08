@@ -38,6 +38,9 @@ Package Consultant is
 --   PROCEDURE Supp_Cslt (L: in out T_Ptr_Cslt; ok: out boolean; Cslt: T_Cslt) ;
    PROCEDURE Ajout_Cslt (C: T_Cslt; tete: IN OUT T_Ptr_Cslt) ;
 --   PROCEDURE Saisie_Cslt (C: OUT T_Cslt; T: in out T_TabVisite) ;
+--PROCEDURE RemiseZ (L: IN OUT T_Ptr_Cslt);
+ --PROCEDURE Affichage_Cslt (tete: T_Ptr_Cslt; C: OUT T_Cslt);
+-- PROCEDURE MAJ_Cslt (tete: IN OUT T_Ptr_Cslt; T: OUT T_Cslt; J: Jour);
 
 END Consultant;
 
