@@ -3,17 +3,17 @@ USE Ada.Text_IO, Ada.Integer_Text_IO, Ada.Float_Text_IO, Outils;
 
 PACKAGE BODY Lst_Ville IS
 
-   --------------------------------------------- Création d'une ville -----------------------------------------------
+   --------------------------------------------- CrÃ©ation d'une ville -----------------------------------------------
    ------------------------------------------------------------------------------------------------------------------
 
-   PROCEDURE CreaVille (Ville : IN OUT T_Ville ; NomVille : T_Mot) IS
+   PROCEDURE CreaVille (Ville : IN OUT T_Ville ; nomVille : T_Mot) IS
 
    BEGIN
 
       Put("   * Nom de la ville : ");
-      Put(NomVille);
+      put(nomVille);
       Ville.Nom := NomVille;
-      New_line;
+      New_Line;
 
       Put("   * Distance entre Poitiers et "); Put(Chaine); Put(" en Km : ");
       Get(Ville.Distance);Skip_Line;
@@ -40,12 +40,12 @@ PACKAGE BODY Lst_Ville IS
 
       IF P = NULL THEN
          P := NEW T_ListeVille'(Ville, P);   --Si le pointeur est sur une case vide : liste vide ou fin de liste
-         Confirm := true;                       --Cofirmation qu'une case est créée. Retourne un boolean
+         Confirm := true;                       --Cofirmation qu'une case est crÃ©Ã©e. Retourne un boolean
       ELSIF P.Ville.Nom > Ville.Nom THEN
          P := NEW T_ListeVille'(Ville, P);
          confirm := true;
       ELSE
-         AjoutVille(P.Suiv, Ville, Confirm);   --Recursivité
+         AjoutVille(P.Suiv, Ville, Confirm);   --RecursivitÃ©
       END IF;
 
    END AjoutVille;
@@ -60,10 +60,10 @@ PACKAGE BODY Lst_Ville IS
 
       IF P /= NULL THEN
 
-         IF P.Ville.Nom = Ville THEN               --Recherche de correspondance, on suppose qu'il n'y a pas deux villes differentes avec le même nom
-            RETURN P;                              --Résultat de la recherche : un pointeur de la liste ville
+         IF P.Ville.Nom = Ville THEN               --Recherche de correspondance, on suppose qu'il n'y a pas deux villes differentes avec le mÃªme nom
+            RETURN P;                              --RÃ©sultat de la recherche : un pointeur de la liste ville
          ELSE
-            RETURN(ChercheVille(P.Suiv, Ville));   --Recursivité
+            RETURN(ChercheVille(P.Suiv, Ville));   --RecursivitÃ©
          END IF;
       ELSE
 
@@ -112,7 +112,7 @@ PACKAGE BODY Lst_Ville IS
 
    END AfficheVille;
 
-   ------------- Affichage de toute les villes et, si le Dieu-Machine le veut, par ordre alphabétique ---------------
+   ------------- Affichage de toute les villes et, si le Dieu-Machine le veut, par ordre alphabÃ©tique ---------------
    ------------------------------------------------------------------------------------------------------------------
 
    PROCEDURE AfficheVilleTT (P : T_PVille) IS
@@ -130,31 +130,32 @@ PACKAGE BODY Lst_Ville IS
       END if;
 
    END AfficheVilleTT;
+----------------------------------------------------------------------------------------------------
 
-
-   ------------------------------------------- Check doublon ------------------------------------------------------
-   ----------------------------------------------------------------------------------------------------------------
-
-   PROCEDURE DoublonVille (P : T_PVille ; Ville : T_mot ; erreur : out boolean) IS
+Procedure Initialisation_Ville (V: OUT T_Ville; Tete: IN OUT T_PVille) IS
 
    BEGIN
 
-      Erreur := False;
+--Bordeaux:
+      V.Nom(1..8):= "BORDEAUX";
+      V.Distance:=250.00;
+      V.Peage:=20.00;
+      AjoutVille(pVille,V,Confirm);
+      
+      
+--Limoges:
+      V.Nom(1..7):= "LIMOGES";
+      V.Distance:=125.00;
+      V.Peage:=0.00;
+      AjoutVille(pVille,V,Confirm);
 
-      IF P /= NULL THEN
+--Tours:
+      V.Nom(1..5):= "TOURS";
+      V.Distance:=104.00;
+      V.Peage:=12.00;
+      AjoutVille(pVille,V,Confirm);
 
-         IF P.Ville.Nom = Ville THEN
-            Put_Line("Cette ville existe deja");
-            erreur := true;
-         END IF;
-
-      ELSE
-
-         DoublonVille(P.Suiv, Ville, erreur);
-
-      END IF;
-   END DoublonVille;
-
+END Initialisation_Ville;
 
 
 
