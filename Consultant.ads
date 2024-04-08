@@ -1,17 +1,17 @@
-WITH Outils, ada.Text_IO, ada.Characters ;
-USE Outils, ada.Text_IO, ada.Characters ;
+WITH Outils, ada.Text_IO, ada.Characters, agenda ;
+USE Outils, ada.Text_IO, ada.Characters, agenda ;
 
 Package Consultant is
 
-   TYPE T_Cslt IS RECORD --définition consultant
+   TYPE T_Cslt IS RECORD --dÃ©finition consultant
 
       Nom: T_Mot :=(OTHERS =>' ');
 
       Prenom: T_Mot:=(OTHERS =>' ');
 
       Ville: T_Mot;
-         
-      --      Visite: T_pVisite;
+
+      PAgenda: T_Pagenda;            
 
       Frais_Dpl: Float;
 
@@ -31,16 +31,25 @@ Package Consultant is
       Suiv: T_Ptr_Cslt;
 
    END RECORD;
+   
+   Cslt : T_Cslt;
+   ptr_Cslt : T_ptr_Cslt;
 
 
 
    PROCEDURE Initialisation_Cslt (C: out T_Cslt; Tete: in out T_Ptr_Cslt) ;
---   PROCEDURE Supp_Cslt (L: in out T_Ptr_Cslt; ok: out boolean; Cslt: T_Cslt) ;
+   PROCEDURE Supp_Cslt (L: in out T_Ptr_Cslt; ok: out boolean; Cslt: T_Cslt) ;
    PROCEDURE Ajout_Cslt (C: T_Cslt; tete: IN OUT T_Ptr_Cslt) ;
---   PROCEDURE Saisie_Cslt (C: OUT T_Cslt; T: in out T_TabVisite) ;
---PROCEDURE RemiseZ (L: IN OUT T_Ptr_Cslt);
- --PROCEDURE Affichage_Cslt (tete: T_Ptr_Cslt; C: OUT T_Cslt);
+-- PROCEDURE Saisie_Cslt (C: OUT T_Cslt; T: in out T_TabVisite) ;
+ --PROCEDURE RemiseZ (L: IN OUT T_Ptr_Cslt);
+   PROCEDURE AfficheCslt (P : T_Ptr_Cslt);
+   PROCEDURE AfficheCsltTT (P : T_Ptr_Cslt);
+   FUNCTION RechercheCslt (Ptr: T_Ptr_Cslt; Nom :T_Mot) RETURN T_Ptr_Cslt;
+   
+   
+   
 -- PROCEDURE MAJ_Cslt (tete: IN OUT T_Ptr_Cslt; T: OUT T_Cslt; J: Jour);
+
 
 END Consultant;
 
