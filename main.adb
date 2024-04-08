@@ -73,15 +73,13 @@ BEGIN
 --   AfficheVilleTT(PVille);
    --CreaVisite (Visite, PAbr_Med);
 
-
-
-   Creajour (Jour);
-   new_line; new_line;
-   Ajoutjour (Pagenda,Jour);
-   new_line;new_line;
-   AfficheAgenda (PAgenda);
-   New_Line;
-   AjoutVisiteListe(pAgenda);
+--   Creajour (Jour);
+--   new_line; new_line;
+--   Ajoutjour (Pagenda,Jour);
+--   new_line;new_line;
+--   AfficheAgenda (PAgenda);
+--   New_Line;
+--   AjoutVisiteListe(pAgenda);
 
 
 

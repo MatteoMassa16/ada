@@ -6,7 +6,7 @@ PACKAGE Abr_Med IS
    TYPE T_Abr_Medecin;
    TYPE T_Pabr_Med IS ACCESS T_Abr_Medecin;
 
-   TYPE T_Decision IS (En_Attente, Hesitant, Adherant, Non_Interesse);
+   TYPE T_Decision IS (Attente, Hesitant, Adherent, Non_Interesse);
 
    TYPE T_Medecin IS RECORD
       Identite : T_Identite;
@@ -31,7 +31,7 @@ PACKAGE Abr_Med IS
    PROCEDURE AffichageAbr (Ptr : T_Pabr_Med);
    PROCEDURE AffichageMed (Ptr : T_Pabr_Med);
    PROCEDURE ModifMed (Ptr : IN OUT T_Pabr_Med);
-   FUNCTION DoublonMed (Ptr : T_Pabr_Med ; Med : T_Medecin) RETURN Boolean;
+   PROCEDURE DoublonMed (Ptr : T_Pabr_Med ; Med : T_Medecin ; Erreur : OUT Boolean);
 
 END Abr_Med;
 

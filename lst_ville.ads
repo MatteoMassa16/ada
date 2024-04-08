@@ -20,7 +20,7 @@ PACKAGE Lst_Ville IS
    Ville : T_Ville;
    PVille : T_PVille;
 
-   PROCEDURE CreaVille (Ville : IN OUT T_Ville);
+   PROCEDURE CreaVille (Ville : IN OUT T_Ville ; nomVille : T_Mot); -- Obliger de mettre une saisie de nom avant
    PROCEDURE AjoutVille (P : IN OUT T_PVille ; Ville : T_Ville ; Confirm : OUT Boolean);
    FUNCTION ChercheVille (P : T_PVille ; Ville : T_Mot) RETURN T_PVille;
    PROCEDURE SuprVille (P : IN OUT T_PVille ; Ville : T_Mot);

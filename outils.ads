@@ -23,7 +23,7 @@ PACKAGE Outils IS
    Chaine : String (1..20);
    K, Cmpt : Integer;
    L: float;
-   Res : Boolean;
+   confirm, Res, erreur : Boolean;
 
    PROCEDURE Saisie (S:OUT String);
    PROCEDURE OuiNon (C : Character ; Res : OUT Boolean);

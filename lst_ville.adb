@@ -6,14 +6,14 @@ PACKAGE BODY Lst_Ville IS
    --------------------------------------------- Création d'une ville -----------------------------------------------
    ------------------------------------------------------------------------------------------------------------------
 
-   PROCEDURE CreaVille (Ville : IN OUT T_Ville) IS
+   PROCEDURE CreaVille (Ville : IN OUT T_Ville ; NomVille : T_Mot) IS
 
    BEGIN
 
       Put("   * Nom de la ville : ");
-      Saisie(Chaine);
-      Ville.Nom := Chaine;
-      New_Line;
+      Put(NomVille);
+      Ville.Nom := NomVille;
+      New_line;
 
       Put("   * Distance entre Poitiers et "); Put(Chaine); Put(" en Km : ");
       Get(Ville.Distance);Skip_Line;
@@ -130,6 +130,30 @@ PACKAGE BODY Lst_Ville IS
       END if;
 
    END AfficheVilleTT;
+
+
+   ------------------------------------------- Check doublon ------------------------------------------------------
+   ----------------------------------------------------------------------------------------------------------------
+
+   PROCEDURE DoublonVille (P : T_PVille ; Ville : T_mot ; erreur : out boolean) IS
+
+   BEGIN
+
+      Erreur := False;
+
+      IF P /= NULL THEN
+
+         IF P.Ville.Nom = Ville THEN
+            Put_Line("Cette ville existe deja");
+            erreur := true;
+         END IF;
+
+      ELSE
+
+         DoublonVille(P.Suiv, Ville, erreur);
+
+      END IF;
+   END DoublonVille;
 
 
 

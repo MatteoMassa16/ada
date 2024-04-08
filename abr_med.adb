@@ -1,10 +1,10 @@
-WITH Ada.Text_IO,Ada.Integer_Text_IO, Ada.Float_Text_IO, Outils, Abr_Med;
-USE Ada.Text_IO,Ada.Integer_Text_IO, Ada.Float_Text_IO, Outils, Abr_Med;
+WITH Ada.Text_IO,Ada.Integer_Text_IO, Ada.Float_Text_IO, Outils, Abr_Med, lst_Ville;
+USE Ada.Text_IO,Ada.Integer_Text_IO, Ada.Float_Text_IO, Outils, Abr_Med, lst_ville;
 
 PACKAGE BODY Abr_Med IS
 
-   ----------------------- Saisie d'un nouveau medecin ---------------------------
-   -------------------------------------------------------------------------------
+   ------------------------------------- Saisie d'un nouveau medecin ---------------------------------------------
+   ---------------------------------------------------------------------------------------------------------------
 
    PROCEDURE SaisieMed (Med : IN OUT T_Medecin) IS
 
@@ -32,22 +32,37 @@ PACKAGE BODY Abr_Med IS
    END SaisieMed;
 
 
-   ------------------------ Ajout medecin dans l'arbre -------------------------
-   -----------------------------------------------------------------------------
+   -------------------------------------- Ajout medecin dans l'arbre ---------------------------------------------
+   ---------------------------------------------------------------------------------------------------------------
 
    PROCEDURE AjoutMed (Ptr : IN OUT T_pAbr_Med; med : in T_medecin) IS
-
-      TestDoublon : Boolean;
 
    BEGIN
 
       IF ptr = NULL THEN
          Ptr := NEW T_Abr_Medecin'(Med, NULL, NULL);
+
+         IF  ChercheVille(PVille, Med.Ville) = NULL THEN
+            Put(Med.Ville);Put(" n'est pas enregistree"); New_Line;
+            Put("L'enregistrer ? (O/N)  ");
+            Get(C);Skip_Line;OuiNon(C, Res);
+
+            IF Res THEN
+               Creaville (Ville, med.ville);
+               AjoutVille(PVille, Ville, Confirm);
+
+               IF Confirm THEN
+                  Put("Ville creee");
+               END IF;
+
+            END IF;
+         END IF;
+
       ELSE
 
-         TestDoublon := DoublonMed(Ptr, Med);
+         DoublonMed(Ptr, Med, erreur);
 
-         IF  TestDoublon = False THEN
+         IF  erreur = False THEN
 
             IF Med.identite.nom <= ptr.Medecin.Identite.Nom THEN
                AjoutMed(ptr.Fg, Med);
@@ -73,11 +88,13 @@ PACKAGE BODY Abr_Med IS
 
          END IF;
       END IF;
+
    END AjoutMed;
 
 
-   ----------------------- Recherche d'un medecin dans l'arbre ----------------
-   ----------------------------------------------------------------------------
+
+   ------------------------------------- Recherche d'un medecin dans l'arbre -------------------------------------
+   ---------------------------------------------------------------------------------------------------------------
 
    FUNCTION RechercheMed (Ptr: T_Pabr_Med; Nom :T_Mot) RETURN T_Pabr_Med IS
 
@@ -101,8 +118,8 @@ PACKAGE BODY Abr_Med IS
 
    END RechercheMed;
 
---------------------------------------------- Affichage de l'arbre ------------------------------------------
--------------------------------------------------------------------------------------------------------------
+----------------------------------------------- Affichage de l'arbre ---------------------------------------------
+------------------------------------------------------------------------------------------------------------------
 
    PROCEDURE AffichageAbr (Ptr : T_Pabr_Med) IS
 
@@ -116,8 +133,8 @@ PACKAGE BODY Abr_Med IS
 
    END AffichageAbr;
 
-   ------------------------------------------ Affichage d'un medecin ----------------------------------------
-   ----------------------------------------------------------------------------------------------------------
+   ------------------------------------------ Affichage d'un medecin ---------------------------------------------
+   ---------------------------------------------------------------------------------------------------------------
 
    PROCEDURE AffichageMed (Ptr : T_Pabr_Med) IS
 
@@ -130,8 +147,8 @@ PACKAGE BODY Abr_Med IS
 
    END AffichageMed;
 
-   ---------------------------------------- Suppression d'un medecin ----------------------------------------
-   ----------------------------------------------------------------------------------------------------------
+   ------------------------------------------ Suppression d'un medecin -------------------------------------------
+   ---------------------------------------------------------------------------------------------------------------
 
 --   PROCEDURE Supp_Med (Ptr : T_Pabr_Med) IS
 
@@ -140,8 +157,8 @@ PACKAGE BODY Abr_Med IS
    --      IF Ptr /= NULL THEN
 
 
-   --------------------------------------- Modification d'un medecin ----------------------------------------
-   ----------------------------------------------------------------------------------------------------------
+   ------------------------------------------ Modification d'un medecin ------------------------------------------
+   ---------------------------------------------------------------------------------------------------------------
 
    PROCEDURE ModifMed (Ptr : IN OUT T_Pabr_Med) IS
 
@@ -175,12 +192,10 @@ PACKAGE BODY Abr_Med IS
 
                MedTemp := ((Chaine, Ptr.Medecin.Identite.Prenom), Ptr.Medecin.Ville, Hesitant, 0);
 
-               TestDoublon := DoublonMed(Ptr, MedTemp);
+               DoublonMed(Ptr, MedTemp, erreur);
 
-               IF TestDoublon THEN
-                  Put_Line("      * Ce medecin existe deja.");
-               ELSE
-               Ptr.Medecin.Identite.Nom := Chaine;
+               IF erreur = false THEN
+                  Ptr.Medecin.Identite.Nom := Chaine;
                   AffichageMed(Ptr);
                END IF;
 
@@ -191,11 +206,9 @@ PACKAGE BODY Abr_Med IS
 
                MedTemp := ((Ptr.Medecin.Identite.Nom, Chaine), Ptr.Medecin.Ville, Hesitant, 0);
 
-               TestDoublon := DoublonMed(Ptr, MedTemp);
+               DoublonMed(Ptr, MedTemp, erreur);
 
-               IF TestDoublon THEN
-                  Put_Line("      * Ce medecin existe deja.");
-               ELSE
+               IF erreur = false THEN
                   Ptr.Medecin.Identite.Prenom := Chaine;
                   AffichageMed(Ptr);
                END IF;
@@ -209,11 +222,9 @@ PACKAGE BODY Abr_Med IS
                Put(Medtemp.Ville);
                put(ptr.medecin.ville);
 
-               TestDoublon := DoublonMed(Ptr, MedTemp);
+               DoublonMed(Ptr, MedTemp, erreur);
 
-               IF TestDoublon THEN
-                  Put_Line("      * Ce medecin existe deja.");
-               ELSE
+               IF erreur = false THEN
                   Ptr.Medecin.Ville := Chaine;
                   AffichageMed(Ptr);
                END IF;
@@ -237,26 +248,33 @@ PACKAGE BODY Abr_Med IS
 
    END ModifMed;
 
-   ------------------------------------ Verif des doublons de medecin ------------------------------------------
-   -------------------------------------------------------------------------------------------------------------
+   -------------------------------------- Verif des doublons de medecin ------------------------------------------
+   ---------------------------------------------------------------------------------------------------------------
 
-   FUNCTION DoublonMed (Ptr : T_Pabr_Med ; Med : T_Medecin) RETURN Boolean IS
-
-      MedExiste : T_Pabr_Med;
+   Procedure DoublonMed (Ptr : T_Pabr_Med ; Med : T_Medecin ; erreur : out boolean) IS
 
    BEGIN
 
+      Erreur := False;
+
       IF Ptr /= NULL THEN
 
-         MedExiste := RechercheMed(Ptr, Med.Identite.Nom);
+         IF Ptr.Medecin.Identite.Nom = Med.Identite.Nom AND
+               Ptr.Medecin.Identite.Prenom = Med.Identite.Prenom AND
+               Ptr.Medecin.Ville = Med.Ville THEN
 
-         IF  MedExiste = NULL OR ELSE (MedExiste.Medecin.Identite.Nom = Med.Identite.Nom AND MedExiste.Medecin.Identite.Prenom /= Med.Identite.Prenom) OR ELSE (MedExiste.Medecin.Ville /= Med.Ville) THEN
-            RETURN False;
+            Put_line("Ce medecin existe deja : "); new_line;
+            AffichageMed (Ptr);
+            Erreur := True;
+
          ELSE
-            RETURN True;
-         END IF;
 
+            DoublonMed(Ptr.Fg, Med, Erreur);
+            DoublonMed(Ptr.Fd, Med, Erreur);
+
+         END IF;
       END IF;
+
    END DoublonMed;
 
 
